@@ -28,8 +28,10 @@
   ],
   "main": "./lib",
   "dependencies": {
-    "sd-zookeeper": "0.0.1",
     "pkginfo": "~0.3.0"
+  },
+  "optionalDependencies": {
+    "sd-zookeeper": "0.0.1"
   },
   "devDependencies": {
     "mocha": "1.x.x",
