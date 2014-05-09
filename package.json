@@ -1,0 +1,42 @@
+{
+  "name": "bixby-sd",
+  "version": "0.0.0",
+  "description": "TODO: No description specified",
+  "keywords": [
+    "discovery",
+    "disco",
+    "sd",
+    "zookeeper"
+  ],
+  "author": {
+    "name": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "http://www.jaredhanson.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bixbyjs/bixby-sd.git"
+  },
+  "bugs": {
+    "url": "http://github.com/bixbyjs/bixby-sd/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/MIT"
+    }
+  ],
+  "main": "./lib",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "1.x.x",
+    "chai": "1.x.x"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js"
+  }
+}
