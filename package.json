@@ -31,7 +31,7 @@
     "pkginfo": "~0.3.0"
   },
   "optionalDependencies": {
-    "sd-zookeeper": "0.0.2"
+    "sd-zookeeper": "0.0.3"
   },
   "devDependencies": {
     "mocha": "1.x.x",
