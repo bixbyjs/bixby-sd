@@ -19,6 +19,37 @@ The standard namespace for these components is `sd`.
 IoC.loader('sd', require('bixby-sd'));
 ```
 
+#### Registry
+
+```javascript
+exports['@require'] = [ 'sd/registry' ];
+```
+
+The registry component provides a service registry where a service can announce
+its capabilities as well as resolve other services.
+
+Support for service registries is pluggable, allowing engineering teams to
+choose the registry that best meets their requirements.  The type of registry to
+use is determined via configuration settings.
+
+###### ZooKeeper
+
+[Apache ZooKeeper](http://zookeeper.apache.org/) can be used as a service
+registry by specifying a `zk://` URL in the `[sd]` block:
+
+```
+[sd]
+url = "zk://127.0.0.1:2181"
+```
+
+[etcd](http://zookeeper.apache.org/) can be used as a service registry by
+specifying an `etcd://` URL in the `[sd]` block:
+
+```
+[sd]
+url = "etcd://127.0.0.1:4001"
+```
+
 ## Tests
 
     $ make test
