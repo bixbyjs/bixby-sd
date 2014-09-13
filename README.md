@@ -21,6 +21,8 @@ IoC.loader('sd', require('bixby-sd'));
 
 ### Components
 
+  - [Registry](#registry)
+
 #### Registry
 
 ```javascript
