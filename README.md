@@ -39,7 +39,9 @@ use is determined via configuration settings.
 ###### ZooKeeper
 
 [Apache ZooKeeper](http://zookeeper.apache.org/) can be used as a service
-registry by specifying a `zk://` URL in the `[sd]` block:
+registry by specifying a `zk://` URL in the `[sd]` block.  The `Registry`
+instance is constructed from the [sd-zookeeper](https://github.com/NodePrime/node-sd-zookeeper)
+module.
 
 ```
 [sd]
@@ -49,7 +51,9 @@ url = "zk://127.0.0.1:2181"
 ###### etcd
 
 [etcd](http://zookeeper.apache.org/) can be used as a service registry by
-specifying an `etcd://` URL in the `[sd]` block:
+specifying an `etcd://` URL in the `[sd]` block.  The `Registry` instance is
+constructed from the [sd-etcd](https://github.com/NodePrime/node-sd-etcd)
+module.
 
 ```
 [sd]
