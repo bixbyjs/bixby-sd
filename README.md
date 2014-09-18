@@ -43,7 +43,7 @@ registry by specifying a `zk://` URL in the `[sd]` block.  The `Registry`
 instance is constructed from the [sd-zookeeper](https://github.com/NodePrime/node-sd-zookeeper)
 module.
 
-```
+```toml
 [sd]
 url = "zk://127.0.0.1:2181"
 ```
@@ -55,7 +55,7 @@ specifying an `etcd://` URL in the `[sd]` block.  The `Registry` instance is
 constructed from the [sd-etcd](https://github.com/NodePrime/node-sd-etcd)
 module.
 
-```
+```toml
 [sd]
 url = "etcd://127.0.0.1:4001"
 ```
