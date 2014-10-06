@@ -19,7 +19,9 @@ The standard namespace for these components is `sd`.
 IoC.loader('sd', require('bixby-sd'));
 ```
 
-### Components
+### Table of Contents
+
+##### Components
 
   - [Registry](#registry)
 
@@ -39,7 +41,7 @@ use is determined via configuration settings.
 ###### ZooKeeper
 
 [Apache ZooKeeper](http://zookeeper.apache.org/) can be used as a service
-registry by specifying a `zk://` URL in the `[sd]` block.  The `Registry`
+registry by specifying a `zk://` URL in the `[sd]` section.  The `Registry`
 instance is constructed from the [sd-zookeeper](https://github.com/NodePrime/node-sd-zookeeper)
 module.
 
@@ -50,8 +52,8 @@ url = "zk://127.0.0.1:2181"
 
 ###### etcd
 
-[etcd](http://zookeeper.apache.org/) can be used as a service registry by
-specifying an `etcd://` URL in the `[sd]` block.  The `Registry` instance is
+[etcd](https://github.com/coreos/etcd) can be used as a service registry by
+specifying an `etcd://` URL in the `[sd]` section.  The `Registry` instance is
 constructed from the [sd-etcd](https://github.com/NodePrime/node-sd-etcd)
 module.
 
@@ -59,6 +61,10 @@ module.
 [sd]
 url = "etcd://127.0.0.1:4001"
 ```
+
+When using etcd, the following settings are also supported:
+
+  - `{integer} [ttl]` - TTL of any announced services, auto updated by heartbeats
 
 ## Tests
 
