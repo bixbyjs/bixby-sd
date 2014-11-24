@@ -28,8 +28,7 @@
   ],
   "main": "./lib",
   "dependencies": {
-    "pkginfo": "~0.3.0",
-    "sd-zookeeper": "0.0.5"
+    "pkginfo": "~0.3.0"
   },
   "optionalDependencies": {
     "sd-etcd": "git://github.com/NodePrime/node-sd-etcd.git#develop"
