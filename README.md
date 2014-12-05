@@ -16,7 +16,7 @@ To utilize service discovery components, register them with the IoC container.
 The standard namespace for these components is `sd`.
 
 ```javascript
-IoC.loader('sd', require('bixby-sd'));
+IoC.use('sd', require('bixby-sd'));
 ```
 
 ### Table of Contents
@@ -32,7 +32,8 @@ exports['@require'] = [ 'sd/registry' ];
 ```
 
 The registry component provides a service registry where a service can announce
-its capabilities as well as resolve other services.
+its capabilities as well as resolve other services.  The interface supported by
+this component is defined by [`Registry`](https://github.com/bixbyjs/bixby-sd/wiki/Registry).
 
 Support for service registries is pluggable, allowing engineering teams to
 choose the registry that best meets their requirements.  The type of registry to
