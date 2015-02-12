@@ -6,6 +6,7 @@
     "discovery",
     "disco",
     "sd",
+    "etcd",
     "zookeeper"
   ],
   "author": {
@@ -28,7 +29,8 @@
   ],
   "main": "./lib",
   "dependencies": {
-    "pkginfo": "~0.3.0"
+    "pkginfo": "~0.3.0",
+    "bootable": "~0.2.4"
   },
   "optionalDependencies": {
     "sd-etcd": "git://github.com/NodePrime/node-sd-etcd.git#develop"
