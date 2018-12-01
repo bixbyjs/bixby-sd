@@ -1,4 +1,4 @@
-exports = module.exports = function(resolver) {
+exports = module.exports = function(registry) {
   var api = {};
   
   api.resolve = function(type, domain, rrtype, cb) {
@@ -11,7 +11,9 @@ exports = module.exports = function(resolver) {
     console.log(type);
     //resolver.resolve(name, rrtype, cb);
     
-    cb();
+    registry.resolve(type, function(err, records) {
+      cb(err, records);
+    });
   }
   
   return api;
@@ -20,6 +22,5 @@ exports = module.exports = function(resolver) {
 exports['@implements'] = 'http://i.bixbyjs.org/sd';
 exports['@singleton'] = true;
 exports['@require'] = [
-  //'http://i.bixbyjs.org/ns/Resolver',
-  //'http://i.bixbyjs.org/ns/Updater'
+  './registry',
 ];
