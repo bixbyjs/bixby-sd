@@ -27,7 +27,13 @@
       "url": "http://www.opensource.org/licenses/MIT"
     }
   ],
-  "main": "./lib",
+  "main": "./app",
+  "assembly": {
+    "namespace": "sd",
+    "components": [
+      "main"
+    ]
+  },
   "dependencies": {
     "pkginfo": "~0.3.0",
     "bootable": "~0.2.4"
