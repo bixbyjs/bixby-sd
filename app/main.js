@@ -7,8 +7,6 @@ exports = module.exports = function(registry) {
       domain = undefined;
     }
     
-    console.log('RESOLVE SERVICE!');
-    console.log(type);
     //resolver.resolve(name, rrtype, cb);
     
     registry.resolve(type, function(err, records) {
