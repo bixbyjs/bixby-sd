@@ -7,6 +7,12 @@ exports = module.exports = function(registry) {
     });
   };
   
+  api.resolveSrv = function(type, domain, cb) {
+    registry.resolveSrv(type, domain, function(err, records) {
+      cb(err, records);
+    });
+  };
+  
   return api;
 };
 
