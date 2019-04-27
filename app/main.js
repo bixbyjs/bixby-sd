@@ -10,7 +10,7 @@ exports = module.exports = function(registry, services) {
   };
   
   api.createConnection = function(type, options) {
-    services.createConnection.apply(services, arguments);
+    return services.createConnection.apply(services, arguments);
   }
   
   return api;
