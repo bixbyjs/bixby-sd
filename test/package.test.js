@@ -10,7 +10,7 @@ describe('bixby-ns', function() {
     var json = require('../package.json');
     
     it('should have assembly metadata', function() {
-      expect(json.assembly.namespace).to.equal('sd');
+      expect(json.assembly.namespace).to.equal('ns');
       
       expect(json.assembly.components).to.have.length(1);
       expect(json.assembly.components).to.include('main');
