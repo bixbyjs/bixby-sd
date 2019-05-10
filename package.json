@@ -34,16 +34,17 @@
       "main"
     ]
   },
-  "dependencies": {
-    "pkginfo": "~0.3.0",
-    "bootable": "~0.2.4"
-  },
-  "optionalDependencies": {
+  "dependencies": {},
+  "x-optionalDependencies": {
     "sd-etcd": "git://github.com/NodePrime/node-sd-etcd.git#develop"
   },
   "devDependencies": {
-    "mocha": "1.x.x",
-    "chai": "1.x.x"
+    "make-node": "^0.3.0",
+    "proxyquire": "^2.1.0",
+    "mocha": "^6.1.4",
+    "chai": "^4.2.0",
+    "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0"
   },
   "engines": {
     "node": "*"
