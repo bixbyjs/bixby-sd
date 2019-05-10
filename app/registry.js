@@ -1,5 +1,7 @@
-exports = module.exports = function(IoC, logger) {
+exports = module.exports = function(IoC, services, logger) {
   var uri = require('url');
+  
+  // TODO: Remove this file.
   
   return Promise.resolve()
     .then(function discoverService() {
@@ -80,5 +82,6 @@ exports = module.exports = function(IoC, logger) {
 exports['@singleton'] = true;
 exports['@require'] = [
   '!container',
+  'http://i.bixbyjs.org/services',
   'http://i.bixbyjs.org/Logger'
 ];
