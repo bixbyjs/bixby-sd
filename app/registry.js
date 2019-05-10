@@ -1,4 +1,4 @@
-exports = module.exports = function(IoC, services, logger) {
+exports = module.exports = function(IoC, logger) {
   var uri = require('url');
   
   // TODO: Remove this file.
@@ -82,6 +82,5 @@ exports = module.exports = function(IoC, services, logger) {
 exports['@singleton'] = true;
 exports['@require'] = [
   '!container',
-  'http://i.bixbyjs.org/services',
   'http://i.bixbyjs.org/Logger'
 ];
