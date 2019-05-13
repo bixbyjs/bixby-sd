@@ -31,7 +31,8 @@
   "assembly": {
     "namespace": "ns",
     "components": [
-      "main"
+      "main",
+      "connect"
     ]
   },
   "dependencies": {},

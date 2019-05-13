@@ -10,7 +10,8 @@ exports = module.exports = function(IoC, services, logger) {
   //services.createConnection(type, { url: 'TODO' });
   var ns = services.createConnection(type, { url: 'TODO' });
   
-  s.use('consul', ns);
+  s.use('consul.', ns);
+  s.use('.', require('dns'));
   
   
   
