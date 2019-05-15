@@ -70,7 +70,7 @@ exports = module.exports = function(ns, services) {
   }
   
   
-  return function(types) {
+  return function(types, cb) {
     console.log('CONNECT TO SERVICE! ' + types)
     
     function resolve(i) {
@@ -86,8 +86,36 @@ exports = module.exports = function(ns, services) {
       
       resolveService(type, function(err, addrs) {
         console.log(err);
+        
+        console.log('RESOLVED!!!!$$$');
         console.log(addrs);
         
+        function connect(i) {
+          var addr = addrs[i];
+          if (!addr) {
+            // TODO: better error
+            return cb(new Error('FAILED TO CONNECT'));
+          }
+          
+          console.log('CONNECT: ');
+          
+          console.log(addr);
+          
+          var parts = type.split('.')
+            , name = parts[0]
+          
+          console.log(name);
+          
+          // TODO: err handing and timeouts
+          
+          var conn = services.createConnection(name, addr, function() {
+            console.log('CONNNECTED!');
+            
+            return cb(null, this);
+            
+          });
+        };
+        connect(0);
       });
       
       
