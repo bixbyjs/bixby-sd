@@ -20,7 +20,7 @@ exports = module.exports = function(IoC, services, logger) {
   var localhost = new LocalhostResolver(services);
   
   
-  Promise.resolve(nss)
+  return Promise.resolve(nss)
     .then(function(nss) {
       return new Promise(function(resolve, reject) {
         var modules = IoC.components('http://i.bixbyjs.org/ns/INameService')
@@ -39,19 +39,17 @@ exports = module.exports = function(IoC, services, logger) {
         })(0);
       });
     })
-    .then(function() {
-      //return new API(registry);
+    .then(function(nss) {
+      //var type = 'consul-catalog-http';
+      var type = 'consul-dns';
+      //services.createConnection(type, { url: 'TODO' });
+      var ns = services.createConnection(type, { url: 'TODO' });
+  
+      nss.use('consul.', ns);
+      nss.use('.', require('dns'));
+  
+      return nss;
     });
-  
-  //var type = 'consul-catalog-http';
-  var type = 'consul-dns';
-  //services.createConnection(type, { url: 'TODO' });
-  var ns = services.createConnection(type, { url: 'TODO' });
-  
-  nss.use('consul.', ns);
-  nss.use('.', require('dns'));
-  
-  return Promise.resolve(nss);
 }
 
 exports['@singleton'] = true;

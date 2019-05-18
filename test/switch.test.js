@@ -9,6 +9,7 @@ var Switch = require('../lib/switch');
 
 describe('switch', function() {
   var _container = {
+    components: function(){},
     create: function(){}
   };
   var _services = {
@@ -35,6 +36,8 @@ describe('switch', function() {
   });
   
   it('should resolve with switch', function(done) {
+    sinon.stub(_container, 'components').returns([]);
+    
     var SwitchStub = sinon.stub().returns(sinon.createStubInstance(Switch));
     var promise = $require('../app/switch',
       { '../lib/switch': SwitchStub }
