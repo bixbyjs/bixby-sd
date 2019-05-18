@@ -1,37 +1,60 @@
 exports = module.exports = function(IoC, services, logger) {
-  var Switch = require('../lib/switch');
+  var Switch = require('../lib/switch')
+    , LocalhostResolver = require('../lib/LocalhostResolver');
   
   
-  var s = new Switch();
+  var nss = new Switch();
   // TODO: Load zone files, detect name servers
+  
+  /*
+  var localhost = new LocalhostResolver();
+  localhost.resolve('consul-dns', 'SRV', function(err, addresses) {
+    console.log('LOCALLY RESOLVED!');
+    console.log(err);
+    console.log(addresses);
+    
+    
+  });
+  */
+  
+  var localhost = new LocalhostResolver(services);
+  
+  
+  Promise.resolve(nss)
+    .then(function(nss) {
+      return new Promise(function(resolve, reject) {
+        var modules = IoC.components('http://i.bixbyjs.org/ns/INameService')
+          , mod, ent;
+        
+        (function iter(i) {
+          mod = modules[i];
+          if (!mod) { return resolve(nss); } // done
+          
+          localhost.resolve(mod.a['@name'] + '.localhost', 'SRV', function(err, addresses) {
+            if (err) { return iter(i + 1); }
+            
+            // TODO: Add this naming service here!
+            iter(i + 1);
+          });
+        })(0);
+      });
+    })
+    .then(function() {
+      //return new API(registry);
+    });
   
   //var type = 'consul-catalog-http';
   var type = 'consul-dns';
   //services.createConnection(type, { url: 'TODO' });
   var ns = services.createConnection(type, { url: 'TODO' });
   
-  s.use('consul.', ns);
-  s.use('.', require('dns'));
+  nss.use('consul.', ns);
+  nss.use('.', require('dns'));
   
-  
-  
-  //console.log('DNS LOOKUPS!');
-  /*
-  var dns = require('dns');
-  
-  
-  //dns.lookup('xmpp.l', function(err, addresses) {
-  //dns.resolve('www.google.com', function(err, addresses) {
-  dns.resolve('_xmpp-client._tcp.google.com', 'SRV', function(err, addresses) {
-    console.log('www.google.com resolve');
-    console.log(err);
-    console.log(addresses);
-  });
-  */
-  
-  return s;
+  return Promise.resolve(nss);
 }
 
+exports['@singleton'] = true;
 exports['@require'] = [
   '!container',
   'http://i.bixbyjs.org/services',
