@@ -20,7 +20,6 @@ describe('main', function() {
   
   it('should create API', function() {
     var _switch = new Object();
-    
     var APIStub = sinon.stub().returns(sinon.createStubInstance(API));
     var api = $require('../app/main',
       { '../lib/api': APIStub }
@@ -28,6 +27,6 @@ describe('main', function() {
     
     expect(APIStub).to.have.been.calledWithExactly(_switch).and.calledWithNew;
     expect(api).to.be.an.instanceof(API);
-  });
+  }); // should create API
   
-});
+}); // main
