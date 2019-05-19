@@ -7,18 +7,18 @@ exports = module.exports = function(ns, services) {
   
   function resolveHost(name, cb) {
     ns.resolve(name, 'A', function(err, addrs) {
-      console.log(err);
-      console.log(addrs);
+      //console.log(err);
+      //console.log(addrs);
       
-      if (err) { return cb(null, err); }
+      if (err) { return cb(err); }
       
       if (addrs.length == 0) {
-        console.log('RESOLVE THE CNAME!');
+        //console.log('RESOLVE THE CNAME!');
         ns.resolve(name, 'CNAME', function(err, name) {
-          console.log(err);
-          console.log(name);
+          //console.log(err);
+          //console.log(name);
           
-          console.log('RESOLVE HOST AGAIN');
+          //console.log('RESOLVE HOST AGAIN');
           return resolveHost(name[0], cb);
         });
         return;
@@ -31,8 +31,11 @@ exports = module.exports = function(ns, services) {
   
   function resolveService(type, cb) {
     ns.resolve(type, 'SRV', function(err, addrs) {
-      console.log(err);
-      console.log(addrs);
+      //console.log(err);
+      //console.log(addrs);
+      
+      if (err) { return cb(err); }
+      
       
       var error = null, records = []
         , pending = 0;
@@ -49,17 +52,17 @@ exports = module.exports = function(ns, services) {
       pending = addrs.length;
       
       addrs.forEach(function(addr) {
-        console.log('RESOLVE HOST!');
-        console.log(addr);
+        //console.log('RESOLVE HOST!');
+        //console.log(addr);
         
         resolveHost(addr.name, function(err, addrs, name) {
-          console.log('RESOLVED HOST!!!!');
-          console.log(err);
-          console.log(addrs);
-          console.log('CNAME: ' + name);
+          //console.log('RESOLVED HOST!!!!');
+          //console.log(err);
+          //console.log(addrs);
+          //console.log('CNAME: ' + name);
           
           addrs = addrs.map(function(a) {
-            return { name: addr.name, port: addr.port, address: a, cname: name }
+            return { name: name, address: a, port: addr.port }
           })
           complete(err, addrs);
         });
@@ -71,10 +74,10 @@ exports = module.exports = function(ns, services) {
   
   
   return function(types, cb) {
-    console.log('CONNECT TO SERVICE! ' + types)
+    //console.log('CONNECT TO SERVICE! ' + types)
     
     function resolve(i) {
-      console.log('ATTEMPT! ' + i);
+      //console.log('ATTEMPT! ' + i);
       
       var type = types[i];
       if (!type) {
@@ -82,13 +85,15 @@ exports = module.exports = function(ns, services) {
         return cb(new Error('SERVICE NOT FOUND'));
       }
       
-      console.log('RESOLVE: ' + type);
+      //console.log('RESOLVE: ' + type);
       
       resolveService(type, function(err, addrs) {
-        console.log(err);
+        //console.log(err);
+        if (err) { return cb(err); }
         
-        console.log('RESOLVED!!!!$$$');
-        console.log(addrs);
+        
+        //console.log('RESOLVED!!!!$$$');
+        //console.log(addrs);
         
         function connect(i) {
           var addr = addrs[i];
@@ -97,19 +102,19 @@ exports = module.exports = function(ns, services) {
             return cb(new Error('FAILED TO CONNECT'));
           }
           
-          console.log('CONNECT: ');
+          //console.log('CONNECT: ');
           
-          console.log(addr);
+          //console.log(addr);
           
           var parts = type.split('.')
             , name = parts[0]
           
-          console.log(name);
+          //console.log(name);
           
           // TODO: err handing and timeouts
           
           var conn = services.createConnection(name, addr, function() {
-            console.log('CONNNECTED!');
+            //console.log('CONNNECTED!');
             
             return cb(null, this);
             
