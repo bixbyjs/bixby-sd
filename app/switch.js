@@ -1,29 +1,13 @@
 exports = module.exports = function(IoC, services, logger) {
   var Switch = require('../lib/switch')
-    , LocalhostResolver = require('../lib/LocalhostResolver');
+    , LocalhostResolver = require('../lib/localhostresolver')
+    , HostsResolver = require('../lib/hostsresolver');
   
-  
-  //var iss = new Switch();
-  //iss.use('localhost.', new LocalhostResolver(services), true);
   
   var nss = new Switch();
+  nss.use(new HostsResolver(services));
+  nss.use('.', require('dns'));
   nss.use('localhost.', new LocalhostResolver(services), true);
-  
-  // TODO: Load zone files, detect name servers
-  
-  /*
-  var localhost = new LocalhostResolver();
-  localhost.resolve('consul-dns', 'SRV', function(err, addresses) {
-    console.log('LOCALLY RESOLVED!');
-    console.log(err);
-    console.log(addresses);
-    
-    
-  });
-  */
-  
-  //var localhost = new LocalhostResolver(services);
-  
   
   return Promise.resolve(nss)
     .then(function(nss) {
@@ -36,20 +20,12 @@ exports = module.exports = function(IoC, services, logger) {
           if (!mod) { return resolve(nss); } // done
           
           var name = mod.a['@name'];
-          console.log('RESOLVING....: ' + name);
           nss.resolve(name, 'SRV', function(err, addresses) {
             if (err) { return iter(i + 1); }
             
-            // TODO: Add this naming service here!
-            console.log('ADD IT!');
-            console.log(name);
-            console.log(addresses);
-            
             var ns = services.createConnection(name, addresses[0]);
-            //console.log(ns);
-            nss.use('consul.', ns);
-            nss.join('consul')
-            
+            // FIXME: Improve this to not be hardcoded to consul
+            nss.use('consul.', ns, true);
             iter(i + 1);
           });
         })(0);
@@ -62,7 +38,7 @@ exports = module.exports = function(IoC, services, logger) {
       //var ns = services.createConnection(type, { url: 'TODO' });
   
       //nss.use('consul.', ns);
-      nss.use('.', require('dns'));
+      //nss.use('.', require('dns'));
       nss.leave('localhost');
   
       return nss;
