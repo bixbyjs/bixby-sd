@@ -3,7 +3,12 @@ exports = module.exports = function(IoC, services, logger) {
     , LocalhostResolver = require('../lib/LocalhostResolver');
   
   
+  //var iss = new Switch();
+  //iss.use('localhost.', new LocalhostResolver(services), true);
+  
   var nss = new Switch();
+  nss.use('localhost.', new LocalhostResolver(services), true);
+  
   // TODO: Load zone files, detect name servers
   
   /*
@@ -17,7 +22,7 @@ exports = module.exports = function(IoC, services, logger) {
   });
   */
   
-  var localhost = new LocalhostResolver(services);
+  //var localhost = new LocalhostResolver(services);
   
   
   return Promise.resolve(nss)
@@ -30,10 +35,21 @@ exports = module.exports = function(IoC, services, logger) {
           mod = modules[i];
           if (!mod) { return resolve(nss); } // done
           
-          localhost.resolve(mod.a['@name'] + '.localhost', 'SRV', function(err, addresses) {
+          var name = mod.a['@name'];
+          console.log('RESOLVING....: ' + name);
+          nss.resolve(name, 'SRV', function(err, addresses) {
             if (err) { return iter(i + 1); }
             
             // TODO: Add this naming service here!
+            console.log('ADD IT!');
+            console.log(name);
+            console.log(addresses);
+            
+            var ns = services.createConnection(name, addresses[0]);
+            //console.log(ns);
+            nss.use('consul.', ns);
+            nss.join('consul')
+            
             iter(i + 1);
           });
         })(0);
@@ -41,12 +57,13 @@ exports = module.exports = function(IoC, services, logger) {
     })
     .then(function(nss) {
       //var type = 'consul-catalog-http';
-      var type = 'consul-dns';
+      //var type = 'consul-dns';
       //services.createConnection(type, { url: 'TODO' });
-      var ns = services.createConnection(type, { url: 'TODO' });
+      //var ns = services.createConnection(type, { url: 'TODO' });
   
-      nss.use('consul.', ns);
+      //nss.use('consul.', ns);
       nss.use('.', require('dns'));
+      nss.leave('localhost');
   
       return nss;
     });
