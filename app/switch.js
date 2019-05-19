@@ -1,13 +1,11 @@
-exports = module.exports = function(IoC, services, logger) {
-  var Switch = require('../lib/switch')
-    , LocalhostResolver = require('../lib/localhostresolver')
-    , HostsResolver = require('../lib/hostsresolver');
+exports = module.exports = function(IoC, hosts, localhost, services, logger) {
+  var Switch = require('../lib/switch');
   
   
   var nss = new Switch();
-  nss.use(new HostsResolver(services));
+  nss.use(hosts);
   nss.use('.', require('dns'));
-  nss.use('localhost.', new LocalhostResolver(services), true);
+  nss.use('localhost.', localhost, true);
   
   return Promise.resolve(nss)
     .then(function(nss) {
@@ -48,6 +46,8 @@ exports = module.exports = function(IoC, services, logger) {
 exports['@singleton'] = true;
 exports['@require'] = [
   '!container',
+  './resolver/hosts',
+  './resolver/localhost',
   'http://i.bixbyjs.org/services',
   'http://i.bixbyjs.org/Logger'
 ];
