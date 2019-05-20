@@ -1,4 +1,5 @@
 exports = module.exports = function(ns, services) {
+  var ResolveError = require('../lib/errors/resolveerror');
   
   // https://github.com/dhruvbird/dns-srv
   
@@ -57,27 +58,16 @@ exports = module.exports = function(ns, services) {
   
   
   return function(types, cb) {
-    //console.log('CONNECT TO SERVICE! ')
-    //console.log(types);
     
     function resolve(i) {
-      //console.log('ATTEMPT! ' + i);
-      
       var type = types[i];
       if (!type) {
-        // TODO: better error
-        return cb(new Error('SERVICE NOT FOUND'));
+        return cb(new ResolveError("Cannot find service '" + types.join(' ') + "'", 'ENOTFOUND', types));
       }
       
-      //console.log('RESOLVE: ' + type);
-      
       resolveService(type, function(err, addrs) {
-        //console.log(err);
-        if (err) { return cb(err); }
+        if (err) { return resolve(i + 1); }
         
-        
-        //console.log('RESOLVED!!!!$$$');
-        //console.log(addrs);
         
         function connect(i) {
           var addr = addrs[i];
@@ -86,9 +76,6 @@ exports = module.exports = function(ns, services) {
             return cb(new Error('FAILED TO CONNECT'));
           }
           
-          //console.log('CONNECT: ');
-          
-          //console.log(addr);
           
           var parts = type.split('.')
             , name = parts[0]
