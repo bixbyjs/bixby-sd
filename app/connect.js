@@ -72,7 +72,7 @@ exports = module.exports = function(ns, services) {
         (function connect(i) {
           var addr = addrs[i];
           if (!addr) {
-            return cb(new ConnectError("Cannot connect to host", addrs));
+            return cb(new ConnectError("Cannot connect to host '" + addrs[0].name + "'", addrs));
           }
           
           var parts = type.split('.')
@@ -84,7 +84,16 @@ exports = module.exports = function(ns, services) {
           var conn = services.createConnection(name, addr, function() {
             return cb(null, this);
           });
-          conn.once('error', onerror);
+          
+          if (conn.once) { // EventEmitter
+            conn.once('error', onerror);
+          } else if (conn.then) { // Promise
+            conn.then(function(c) {
+              return cb(null, c);
+            }).catch(function(err) {
+              return connect(i + 1);
+            });
+          }
         })(0);
       });
     };
