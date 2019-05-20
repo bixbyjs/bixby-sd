@@ -1,5 +1,6 @@
 exports = module.exports = function(ns, services) {
-  var ResolveError = require('../lib/errors/resolveerror');
+  var ResolveError = require('../lib/errors/resolveerror')
+    , ConnectError = require('../lib/errors/connecterror');
   
   // https://github.com/dhruvbird/dns-srv
   
@@ -68,35 +69,25 @@ exports = module.exports = function(ns, services) {
       resolveService(type, function(err, addrs) {
         if (err) { return resolve(i + 1); }
         
-        
-        function connect(i) {
+        (function connect(i) {
           var addr = addrs[i];
           if (!addr) {
-            // TODO: better error
-            return cb(new Error('FAILED TO CONNECT'));
+            return cb(new ConnectError("Cannot connect to host", addrs));
           }
-          
           
           var parts = type.split('.')
             , name = parts[0]
           
-          //console.log(name);
-          
-          // TODO: err handing and timeouts
-          
+          function onerror(err) {
+            return connect(i + 1);
+          }
           var conn = services.createConnection(name, addr, function() {
-            //console.log('CONNNECTED!');
-            
             return cb(null, this);
-            
           });
-        };
-        connect(0);
+          conn.once('error', onerror);
+        })(0);
       });
-      
-      
     };
-    
     
     process.nextTick(function() { resolve(0); });
   };
