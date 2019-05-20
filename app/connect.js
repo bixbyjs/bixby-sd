@@ -6,75 +6,59 @@ exports = module.exports = function(ns, services) {
   
   
   function resolveHost(name, cb) {
+    // TODO: call lookup to get IPv4 and v6
     ns.resolve(name, 'A', function(err, addrs) {
-      //console.log(err);
-      //console.log(addrs);
-      
       if (err) { return cb(err); }
       
       if (addrs.length == 0) {
-        //console.log('RESOLVE THE CNAME!');
         ns.resolve(name, 'CNAME', function(err, name) {
-          //console.log(err);
-          //console.log(name);
-          
-          //console.log('RESOLVE HOST AGAIN');
+          if (err) { return cb(err); }
+          // repeat host resolution, using canonical name
           return resolveHost(name[0], cb);
         });
         return;
       }
       
+      // TODO: pass cname down in more obvious fashion
       return cb(null, addrs, name);
-      
     });
   }
   
   function resolveService(type, cb) {
     ns.resolve(type, 'SRV', function(err, addrs) {
-      //console.log(err);
-      //console.log(addrs);
-      
       if (err) { return cb(err); }
       
-      
-      var error = null, records = []
-        , pending = 0;
+      // accumulate the records, pending all resolveHost calls.
+      // save first error, if any
+      var records = [], pending = 0
+        , error;
       var complete = function(err, addrs) {
         error = error || err;
-        records = records.concat(addrs);
+        if (addrs) { records = records.concat(addrs); }
         pending--;
-        if (pending < 1) {
+        if (pending == 0) {
           return cb(error, records);
         }
       };
       
       // TODO: group srv records
       pending = addrs.length;
-      
       addrs.forEach(function(addr) {
-        //console.log('RESOLVE HOST!');
-        //console.log(addr);
-        
         resolveHost(addr.name, function(err, addrs, name) {
-          //console.log('RESOLVED HOST!!!!');
-          //console.log(err);
-          //console.log(addrs);
-          //console.log('CNAME: ' + name);
-          
+          if (err) { return complete(err); }
           addrs = addrs.map(function(a) {
             return { name: name, address: a, port: addr.port }
           })
           complete(err, addrs);
         });
-        
       });
-      
     });
   }
   
   
   return function(types, cb) {
-    //console.log('CONNECT TO SERVICE! ' + types)
+    //console.log('CONNECT TO SERVICE! ')
+    //console.log(types);
     
     function resolve(i) {
       //console.log('ATTEMPT! ' + i);
