@@ -88,9 +88,10 @@ exports = module.exports = function(ns, services) {
           if (conn.once) { // EventEmitter
             conn.once('error', onerror);
           } else if (conn.then) { // Promise
+            
             conn.then(function(c) {
               return cb(null, c);
-            }).catch(function(err) {
+            }, function(err) {
               return connect(i + 1);
             });
           }
