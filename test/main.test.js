@@ -14,7 +14,7 @@ describe('main', function() {
   });
   
   it('should be annotated', function() {
-    expect(factory['@implements']).to.deep.equal([ 'http://i.bixbyjs.org/ns', 'http://i.bixbyjs.org/sd' ]);
+    expect(factory['@implements']).to.equal('http://i.bixbyjs.org/ns/Resolver');
     expect(factory['@singleton']).to.equal(true);
   });
   
