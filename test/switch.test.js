@@ -32,6 +32,7 @@ describe('switch', function() {
   });
   
   it('should be annotated', function() {
+    expect(factory['@implements']).to.equal('http://i.bixbyjs.org/ns/Resolver');
     expect(factory['@singleton']).to.equal(true);
   });
   

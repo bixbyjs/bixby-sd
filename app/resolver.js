@@ -43,6 +43,7 @@ exports = module.exports = function(IoC, hosts, localhost, services, logger) {
     });
 }
 
+exports['@implements'] = 'http://i.bixbyjs.org/ns/Resolver';
 exports['@singleton'] = true;
 exports['@require'] = [
   '!container',
