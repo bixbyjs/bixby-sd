@@ -3,7 +3,7 @@
 var $require = require('proxyquire');
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../app/switch');
+var factory = require('../app/resolver');
 var Switch = require('../lib/switch');
 
 
@@ -39,7 +39,7 @@ describe('switch', function() {
     sinon.stub(_container, 'components').returns([]);
     
     var SwitchStub = sinon.stub().returns(sinon.createStubInstance(Switch));
-    var promise = $require('../app/switch',
+    var promise = $require('../app/resolver',
       { '../lib/switch': SwitchStub }
     )(_container, _services, _logger);
     
