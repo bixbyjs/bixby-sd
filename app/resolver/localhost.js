@@ -1,7 +1,9 @@
-exports = module.exports = function(services) {
-  var LocalhostResolver = require('../../lib/localhostresolver');
-  
-  return new LocalhostResolver(services);
+var LocalhostResolver = require('../../lib/localhostresolver');
+
+exports = module.exports = function(list) {
+  return new LocalhostResolver(list);
 };
 
-exports['@require'] = [ 'http://i.bixbyjs.org/services' ];
+exports['@require'] = [
+  'http://i.bixbyjs.org/ns/ServicesList'
+];

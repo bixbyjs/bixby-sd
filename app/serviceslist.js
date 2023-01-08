@@ -1,11 +1,11 @@
 var List = require('../lib/serviceslist');
 
-exports = module.exports = function(C, Logger) {
+exports = module.exports = function(c, logger) {
   var list = new List();
   
   return Promise.resolve(list)
     .then(function(list) {
-      var components = C.components()
+      var components = c.components()
         , component, i, len;
       
       for (i = 0, len = components.length; i < len; ++i) {
@@ -17,7 +17,7 @@ exports = module.exports = function(C, Logger) {
           });
           
           // TODO: Improve log message
-          Logger.info('Registered service name: ' + component.a['@service']);
+          logger.info('Registered service name: ' + component.a['@service']);
         }
       }
       
