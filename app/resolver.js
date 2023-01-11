@@ -8,23 +8,53 @@ exports = module.exports = function(IoC, hosts, localhost, services, logger) {
   nss.use('localhost.', localhost, true);
   
   return Promise.resolve(nss)
-    .then(function(nss) {
+    .then(function(resolver) {
+      // NOTE: These are resolved directly here, to avoid a circular dependency with the
+      // $location variable, which implicilty requires this component.
+      
       return new Promise(function(resolve, reject) {
-        var modules = IoC.components('http://i.bixbyjs.org/ns/INameService')
-          , mod, ent;
+        var components = IoC.components('module:bixby-ns.Resolver');
         
         (function iter(i) {
-          mod = modules[i];
-          if (!mod) { return resolve(nss); } // done
+          var component = components[i];
+          if (!component) {
+            return resolve(resolver);
+          }
           
-          var name = mod.a['@name'];
-          nss.resolve(name, 'SRV', function(err, addresses) {
-            if (err) { return iter(i + 1); }
+          
+          var service = component.a['@service'];
+          var proto = component.a['@protocol'] || 'tcp';
+          var label = '_' + service + '._' + proto;
+          
+          // TODO: Should resolver.domain be here???  Or should it search domains if not specified?
+          resolver.resolve(label + '.' + resolver.domain, 'SRV', function(err, addresses) {
+            if (err) {
+              return iter(i + 1);
+            }
+          
+            var ctx = {
+              '$location': addresses[0]
+            };
+            component.create(ctx)
+              .then(function(service) {
+                console.log('CREATED');
+                console.log(service)
+              
+                logger.info('Loaded NS service: ' + (component.a['@scheme'] || service.name));
             
-            var ns = services.createConnection(name, addresses[0]);
-            // FIXME: Improve this to not be hardcoded to consul
-            nss.use('consul.', ns, true);
-            iter(i + 1);
+                // FIXME: Improve this to not be hardcoded to consul
+                resolver.use('consul.', service, true);
+                iter(i + 1);
+              }, function(err) {
+                // TODO: Print the package name in the error, so it can be found
+                // TODO: Make the error have the stack of dependencies.
+                if (err.code == 'IMPLEMENTATION_NOT_FOUND') {
+                  logger.notice(err.message + ' while loading component ' + component.id);
+                  return iter(i + 1);
+                }
+            
+                reject(err);
+              });
           });
         })(0);
       });
