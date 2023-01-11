@@ -1,3 +1,4 @@
+// TODO: remove this
 exports = module.exports = function(ns, services) {
   var ResolveError = require('../lib/errors/resolveerror')
     , ConnectError = require('../lib/errors/connecterror');
