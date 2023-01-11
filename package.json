@@ -32,7 +32,7 @@
     "namespace": "ns",
     "components": [
       "resolver",
-      "connect"
+      "serviceslist"
     ]
   },
   "dependencies": {},
