@@ -32,7 +32,8 @@
     "namespace": "ns",
     "components": [
       "resolver",
-      "serviceslist"
+      "serviceslist",
+      "updater"
     ]
   },
   "dependencies": {},
