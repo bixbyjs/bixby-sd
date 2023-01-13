@@ -14,7 +14,7 @@ exports = module.exports = function(IoC, logger) {
         (function iter(i) {
           var component = components[i];
           if (!component) {
-            return resolve(authenticator);
+            return resolve(updater);
           }
           
           component.create()
