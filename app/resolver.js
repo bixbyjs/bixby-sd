@@ -37,9 +37,6 @@ exports = module.exports = function(IoC, hosts, localhost, services, logger) {
             };
             component.create(ctx)
               .then(function(service) {
-                console.log('CREATED');
-                console.log(service)
-              
                 logger.info('Loaded NS service: ' + (component.a['@scheme'] || service.name));
             
                 // FIXME: Improve this to not be hardcoded to consul
