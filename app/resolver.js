@@ -1,4 +1,4 @@
-exports = module.exports = function(IoC, hosts, localhost, services, logger) {
+exports = module.exports = function(IoC, hosts, localhost, environ, services, logger) {
   var Switch = require('../lib/switch');
   
   
@@ -6,6 +6,7 @@ exports = module.exports = function(IoC, hosts, localhost, services, logger) {
   nss.use(hosts);
   nss.use('.', require('dns'));
   nss.use('localhost.', localhost, true);
+  nss.use('localhost.', environ); // TODO: shoudl this be localhost?
   
   return Promise.resolve(nss)
     .then(function(resolver) {
@@ -76,6 +77,7 @@ exports['@require'] = [
   '!container',
   './resolver/hosts',
   './resolver/localhost',
+  './resolver/environ',
   'http://i.bixbyjs.org/services',
   'http://i.bixbyjs.org/Logger'
 ];

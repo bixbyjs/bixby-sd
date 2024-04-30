@@ -11,9 +11,12 @@ exports = module.exports = function(c, logger) {
       for (i = 0, len = components.length; i < len; ++i) {
         component = components[i];
         if (component.a['@service']) {
+          
+          // TODO: merge these things, in case multiple components have the same service name but different envs, for example
           list.add({
             name: component.a['@service'],
-            port: component.a['@port']
+            port: component.a['@port'],
+            env: component.a['@env']
           });
           
           // TODO: Improve log message
