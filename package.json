@@ -1,6 +1,6 @@
 {
   "name": "bixby-sd",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Service discovery components of the Bixby framework.",
   "keywords": [
     "discovery",
