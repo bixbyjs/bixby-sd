@@ -12,9 +12,10 @@ describe('bixby-ns', function() {
     it('should have assembly metadata', function() {
       expect(json.assembly.namespace).to.equal('ns');
       
-      expect(json.assembly.components).to.have.length(2);
+      expect(json.assembly.components).to.have.length(3);
       expect(json.assembly.components).to.include('resolver');
       expect(json.assembly.components).to.include('serviceslist');
+      expect(json.assembly.components).to.include('updater');
     });
   });
   
