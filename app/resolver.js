@@ -1,9 +1,8 @@
-exports = module.exports = function(IoC, hosts, localhost, environ, services, logger) {
+exports = module.exports = function(IoC, localhost, environ, services, logger) {
   var Switch = require('../lib/switch');
   
-  
   var nss = new Switch();
-  nss.use(hosts);
+  //nss.use(hosts);
   nss.use('.', require('dns'));
   nss.use('localhost.', localhost, true);
   nss.use('localhost.', environ); // TODO: shoudl this be localhost?
@@ -75,7 +74,6 @@ exports['@implements'] = 'http://i.bixbyjs.org/ns/Resolver';
 exports['@singleton'] = true;
 exports['@require'] = [
   '!container',
-  './resolver/hosts',
   './resolver/localhost',
   './resolver/environ',
   'http://i.bixbyjs.org/services',
