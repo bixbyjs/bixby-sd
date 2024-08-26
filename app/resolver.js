@@ -1,4 +1,4 @@
-exports = module.exports = function(IoC, localhost, environ, services, logger) {
+exports = module.exports = function(IoC, localhost, environ, logger) {
   var Switch = require('../lib/switch');
   
   var nss = new Switch();
@@ -76,6 +76,5 @@ exports['@require'] = [
   '!container',
   './resolver/localhost',
   './resolver/environ',
-  'http://i.bixbyjs.org/services',
   'http://i.bixbyjs.org/Logger'
 ];
