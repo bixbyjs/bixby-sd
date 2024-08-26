@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.5] - 2024-08-26
+### Changed
+- `Switch` always resolves within `localhost` domain.  A future version will
+introduce support for search domains.
+
 ## [0.0.4] - 2024-08-26
 ### Added
 - `EnvironResolver` supports "generic" environment variables (such as `DATABASE_URL`)
