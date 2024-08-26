@@ -1,9 +1,5 @@
 var EnvironResolver = require('../../lib/environresolver');
 
-exports = module.exports = function(list) {
-  return new EnvironResolver(list);
+exports = module.exports = function() {
+  return new EnvironResolver();
 };
-
-exports['@require'] = [
-  'http://i.bixbyjs.org/ns/ServicesList'
-];
