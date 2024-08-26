@@ -63,4 +63,22 @@ describe('resolver/environ', function() {
     });
   }); // should error when environment variable is not defined
   
+  it('should error when generic environment variable has scheme that does not matche service name', function(done) {
+    var isdef = ('DATABASE_URL' in process.env)
+      , value = process.env['DATABASE_URL'];
+    
+    process.env['DATABASE_URL'] = 'mysql://user_name@198.51.100.2:3306/world';
+    
+    var resolver = factory();
+    resolver.resolve('_postgresql._tcp', 'URI', function(err, records) {
+      if (isdef) { process.env['DATABASE_URL'] = value; }
+      else { delete process.env['DATABASE_URL'] }
+      
+      expect(err).to.be.an.instanceOf(Error);
+      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp');
+      expect(err.code).to.equal('ENOTFOUND');
+      done();
+    });
+  }); // should error when generic environment variable has scheme that does not matche service name
+  
 });
