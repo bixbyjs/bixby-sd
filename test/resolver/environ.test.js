@@ -27,6 +27,25 @@ describe('resolver/environ', function() {
     });
   }); // should error when environment variable is not defined
   
+  it('should resolve to value of generic environment variable where scheme matches service name', function(done) {
+    var isdef = ('DATABASE_URL' in process.env)
+      , value = process.env['DATABASE_URL'];
+    
+    process.env['DATABASE_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
+    
+    var resolver = factory();
+    resolver.resolve('_postgresql._tcp', 'URI', function(err, records) {
+      if (isdef) { process.env['DATABASE_URL'] = value; }
+      else { delete process.env['DATABASE_URL'] }
+      
+      expect(err).to.be.null;
+      expect(records).to.deep.equal([ {
+        uri: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
+      } ]);
+      done();
+    });
+  }); // should resolve to value of generic environment variable where scheme matches service name
+  
   it('should error when environment variable is not defined', function(done) {
     var isdef = ('POSTGRESQL_URL' in process.env)
       , value = process.env['POSTGRESQL_URL'];
