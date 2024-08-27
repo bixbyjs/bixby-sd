@@ -1,0 +1,5 @@
+postgresql:
+  port: 5432
+  protocol: tcp
+  aliases:
+    - postgres
