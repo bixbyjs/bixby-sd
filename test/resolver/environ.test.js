@@ -63,7 +63,7 @@ describe('resolver/environ', function() {
     });
   }); // should error when environment variable is not defined
   
-  it('should error when generic environment variable has scheme that does not matche service name', function(done) {
+  it('should error when generic environment variable has scheme that does not match service name', function(done) {
     var isdef = ('DATABASE_URL' in process.env)
       , value = process.env['DATABASE_URL'];
     
@@ -79,6 +79,6 @@ describe('resolver/environ', function() {
       expect(err.code).to.equal('ENOTFOUND');
       done();
     });
-  }); // should error when generic environment variable has scheme that does not matche service name
+  }); // should error when generic environment variable has scheme that does not match service name
   
 });
