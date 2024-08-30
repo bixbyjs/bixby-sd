@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- `LocalhostResolver` implemented using `module:bixby-ns.ServiceRegistry`
-component rather than `http://i.bixbyjs.org/ns/ServicesList`.
+- `LocalhostResolver` now works solely off of configuration, no longer
+depends on a component implementing the `http://i.bixbyjs.org/ns/ServicesList`
+interface or associated `@service` and `@port` annotations.
 
 ### Removed
 - `services` component which implemented `http://i.bixbyjs.org/ns/ServicesList`.
