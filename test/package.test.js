@@ -14,7 +14,6 @@ describe('bixby-ns', function() {
       
       expect(json.assembly.components).to.have.length(3);
       expect(json.assembly.components).to.include('resolver');
-      expect(json.assembly.components).to.include('services');
       expect(json.assembly.components).to.include('updater');
     });
   });

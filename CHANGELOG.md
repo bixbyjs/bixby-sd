@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Removed
+`services` component which implemented `http://i.bixbyjs.org/ns/ServicesList`.
+Equivalent functionality has moved to `bixby-ns`, but uses configuration files
+rather than `@service` and `@port` annotations.
 
 ## [0.0.5] - 2024-08-26
 ### Changed
