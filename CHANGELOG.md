@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- `LocalhostResolver` implemented using `module:bixby-ns.ServiceRegistry`
+component rather than `http://i.bixbyjs.org/ns/ServicesList`.
+
 ### Removed
-`services` component which implemented `http://i.bixbyjs.org/ns/ServicesList`.
+- `services` component which implemented `http://i.bixbyjs.org/ns/ServicesList`.
 Equivalent functionality has moved to `bixby-ns`, but uses configuration files
 rather than `@service` and `@port` annotations.
 
