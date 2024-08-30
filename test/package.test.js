@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 
 
-describe('bixby-ns', function() {
+describe('bixby-sd', function() {
   
   describe('package.json', function() {
     var json = require('../package.json');
