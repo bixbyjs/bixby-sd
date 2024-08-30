@@ -9,7 +9,7 @@ var events = require('events');
 
 describe('resolver/localhost', function() {
   
-  it('should resolve to value of environment variable matching service name', function(done) {
+  it('should resolve when connection to port is established', function(done) {
     var net = {
       createConnection: sinon.spy(function(port) {
         var socket = new events.EventEmitter();
@@ -50,7 +50,6 @@ describe('resolver/localhost', function() {
       done();
     });
     
-  });
+  }); // should resolve when connection to port is established
   
-  
-}); // resolver/hosts
+});
