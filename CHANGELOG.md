@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `local/resolver` component implementing `http://i.bixbyjs.org/ns/LocalResolver`
 interface, intended for bootstrapping network-based service discovery services.
 
+### Changed
+- Network-based resolvers are expected to implement `module:bixby-sd.ResolverService`
+interface, rather than `module:bixby-ns.Resolver`.  They should `@require` a `$srv`
+record using the `domain=localhost` structured parameter to avoid a recursive
+dependency on the `http://i.bixbyjs.org/ns/Resolver` interface.
+
 ## [0.0.6] - 2024-08-30
 ### Changed
 - `LocalhostResolver` now works solely off of configuration, no longer
