@@ -9,11 +9,10 @@ exports = module.exports = function(IoC, localhost, environ, logger) {
   
   return Promise.resolve(nss)
     .then(function(resolver) {
-      // NOTE: These are resolved directly here, to avoid a circular dependency with the
-      // $location variable, which implicilty requires this component.
+      
       
       return new Promise(function(resolve, reject) {
-        var components = IoC.components('module:bixby-ns.Resolver');
+        var components = IoC.components('module:bixby-sd.ResolverService');
         
         (function iter(i) {
           var component = components[i];
@@ -21,7 +20,21 @@ exports = module.exports = function(IoC, localhost, environ, logger) {
             return resolve(resolver);
           }
           
+          component.create()
+            .then(function(service) {
+              // FIXME: Improve this to not be hardcoded to consul
+              resolver.use('consul.', service, true);
+              iter(i + 1);
+            }, function(err) {
+              iter(i + 1);
+            });
           
+          // NOTE: These are resolved directly here, to avoid a circular dependency with the
+          // $location variable, which implicilty requires this component.
+          
+          // TODO: Can passing ctx to C.create() now be deprecated?
+          
+          /*
           var service = component.a['@service'];
           var proto = component.a['@protocol'] || 'tcp';
           var label = '_' + service + '._' + proto;
@@ -53,6 +66,7 @@ exports = module.exports = function(IoC, localhost, environ, logger) {
                 reject(err);
               });
           });
+          */
         })(0);
       });
     })
