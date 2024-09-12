@@ -31,9 +31,14 @@ exports = module.exports = function(resolver) {
   
     resolver.resolve(hostname, 'A', function(err, addresses) {
       if (err) { return cb(err); }
-    
-      // TODO: handle empty addresses, likely by resolving CNAME and going again
-    
+      
+      if (addresses.length == 0) {
+        resolver.resolve(hostname, 'CNAME', function(err, addresses) {
+          if (err) { return cb(err); }
+          lookup(addresses[0], options, cb);
+        });
+        return;
+      }
     
       for (i = 0, len = addresses.length; i < len; ++i) {
         result.push({ address: addresses[i], family: 4 });
