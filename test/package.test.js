@@ -36,6 +36,11 @@ describe('bixby-sd', function() {
         if (err) { return done(err); }
         expect(address).to.equal('104.20.23.46');
         expect(family).to.equal(4);
+        
+        expect(resolver.resolve.callCount).to.equal(1);
+        expect(resolver.resolve.getCall(0).args[0]).to.equal('nodejs.org');
+        expect(resolver.resolve.getCall(0).args[1]).to.equal('A');
+        
         done();
       });
     }); // should yield address and family
@@ -51,6 +56,11 @@ describe('bixby-sd', function() {
           { address: '104.20.22.46', family: 4 },
           { address: '104.20.23.46', family: 4 }
         ]);
+        
+        expect(resolver.resolve.callCount).to.equal(1);
+        expect(resolver.resolve.getCall(0).args[0]).to.equal('nodejs.org');
+        expect(resolver.resolve.getCall(0).args[1]).to.equal('A');
+        
         done();
       });
     }); // should yield array when all option is set to true
