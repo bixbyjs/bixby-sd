@@ -29,12 +29,12 @@ describe('bixby-sd', function() {
     
     it('should yield address and family', function(done) {
       var resolver = new Object();
-      resolver.resolve = sinon.stub().yieldsAsync(null, [ '127.0.0.1' ]);
+      resolver.resolve = sinon.stub().yieldsAsync(null, [ '104.20.23.46' ]);
       
       var sd = factory(resolver);
-      sd.lookup('host1.test', function(err, address, family) {
+      sd.lookup('nodejs.org', function(err, address, family) {
         if (err) { return done(err); }
-        expect(address).to.equal('127.0.0.1');
+        expect(address).to.equal('104.20.23.46');
         expect(family).to.equal(4);
         done();
       });
@@ -42,13 +42,14 @@ describe('bixby-sd', function() {
     
     it('should yield array when all option is set to true', function(done) {
       var resolver = new Object();
-      resolver.resolve = sinon.stub().yieldsAsync(null, [ '127.0.0.1' ]);
+      resolver.resolve = sinon.stub().yieldsAsync(null, [ '104.20.22.46', '104.20.23.46' ]);
       
       var sd = factory(resolver);
-      sd.lookup('host1.test', { family: undefined, hints: 1024, all: true }, function(err, addresses) {
+      sd.lookup('nodejs.org', { family: undefined, hints: 1024, all: true }, function(err, addresses) {
         if (err) { return done(err); }
         expect(addresses).to.deep.equal([
-          { address: '127.0.0.1', family: 4 }
+          { address: '104.20.22.46', family: 4 },
+          { address: '104.20.23.46', family: 4 }
         ]);
         done();
       });
