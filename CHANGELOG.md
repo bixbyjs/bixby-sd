@@ -9,10 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `module:bixby-sd` implementation which provides `lookup()` function matching
 functionality from Node's `dns.loopup()` function.  Used to resolve host names
 via non-DNS service discovery services.
+- `EnvironResolver` supports service name aliases when checking the environment
+for configuration.
 - `local/resolver` component implementing `http://i.bixbyjs.org/ns/LocalResolver`
 interface, intended for bootstrapping network-based service discovery services.
 
 ### Changed
+- `resolveUri()` yields an object with a `url` property, rather than `uri`.
 - Network-based resolvers are expected to implement `module:bixby-sd.ResolverService`
 interface, rather than `module:bixby-ns.Resolver`.  They should `@require` a `$srv`
 record using the `domain=localhost` structured parameter to avoid a recursive

@@ -14,10 +14,17 @@ describe('resolver/environ', function() {
     
     process.env['POSTGRESQL_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
     
-    var resolver = factory();
+    var registry = new Object();
+    registry.get = sinon.stub().returns(undefined);
+    
+    var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['POSTGRESQL_URL'] = value; }
       else { delete process.env['POSTGRESQL_URL'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.null;
       expect(records).to.deep.equal([ {
@@ -25,7 +32,59 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should error when environment variable is not defined
+  }); // should resolve to value of environment variable matching service name
+  
+  it('should resolve to value of environment variable matching service alias', function(done) {
+    var isdef = ('POSTGRES_URL' in process.env)
+      , value = process.env['POSTGRES_URL'];
+    
+    process.env['POSTGRES_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
+    
+    var registry = new Object();
+    registry.get = sinon.stub().returns({ aliases: [ 'postgres', 'pg' ]});
+    
+    var resolver = factory(registry);
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
+      if (isdef) { process.env['POSTGRES_URL'] = value; }
+      else { delete process.env['POSTGRES_URL'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
+      
+      expect(err).to.be.null;
+      expect(records).to.deep.equal([ {
+        url: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
+      } ]);
+      done();
+    });
+  }); // should resolve to value of environment variable matching service alias
+  
+  it('should resolve to value of environment variable matching second service alias', function(done) {
+    var isdef = ('PG_URL' in process.env)
+      , value = process.env['PG_URL'];
+    
+    process.env['PG_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
+    
+    var registry = new Object();
+    registry.get = sinon.stub().returns({ aliases: [ 'postgres', 'pg' ]});
+    
+    var resolver = factory(registry);
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
+      if (isdef) { process.env['PG_URL'] = value; }
+      else { delete process.env['PG_URL'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
+      
+      expect(err).to.be.null;
+      expect(records).to.deep.equal([ {
+        url: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
+      } ]);
+      done();
+    });
+  }); // should resolve to value of environment variable matching second service alias
   
   it('should resolve to value of generic environment variable where scheme matches service name', function(done) {
     var isdef = ('DATABASE_URL' in process.env)
@@ -33,10 +92,17 @@ describe('resolver/environ', function() {
     
     process.env['DATABASE_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
     
-    var resolver = factory();
+    var registry = new Object();
+    registry.get = sinon.stub().returns(undefined);
+    
+    var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['DATABASE_URL'] = value; }
       else { delete process.env['DATABASE_URL'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.null;
       expect(records).to.deep.equal([ {
@@ -52,9 +118,16 @@ describe('resolver/environ', function() {
     
     delete process.env['POSTGRESQL_URL'];
     
-    var resolver = factory();
+    var registry = new Object();
+    registry.get = sinon.stub().returns(undefined);
+    
+    var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['POSTGRESQL_URL'] = value; }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
       expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp.localhost');
@@ -70,10 +143,17 @@ describe('resolver/environ', function() {
     
     process.env['DATABASE_URL'] = 'mysql://user_name@198.51.100.2:3306/world';
     
-    var resolver = factory();
+    var registry = new Object();
+    registry.get = sinon.stub().returns(undefined);
+    
+    var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['DATABASE_URL'] = value; }
       else { delete process.env['DATABASE_URL'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
       expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp.localhost');
