@@ -15,7 +15,7 @@ describe('resolver/environ', function() {
     process.env['POSTGRESQL_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
     
     var resolver = factory();
-    resolver.resolve('_postgresql._tcp', 'URI', function(err, records) {
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['POSTGRESQL_URL'] = value; }
       else { delete process.env['POSTGRESQL_URL'] }
       
@@ -34,7 +34,7 @@ describe('resolver/environ', function() {
     process.env['DATABASE_URL'] = 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
     
     var resolver = factory();
-    resolver.resolve('_postgresql._tcp', 'URI', function(err, records) {
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['DATABASE_URL'] = value; }
       else { delete process.env['DATABASE_URL'] }
       
@@ -53,12 +53,13 @@ describe('resolver/environ', function() {
     delete process.env['POSTGRESQL_URL'];
     
     var resolver = factory();
-    resolver.resolve('_postgresql._tcp', 'URI', function(err, records) {
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['POSTGRESQL_URL'] = value; }
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp');
+      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp.localhost');
       expect(err.code).to.equal('ENOTFOUND');
+      expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
   }); // should error when environment variable is not defined
@@ -70,13 +71,14 @@ describe('resolver/environ', function() {
     process.env['DATABASE_URL'] = 'mysql://user_name@198.51.100.2:3306/world';
     
     var resolver = factory();
-    resolver.resolve('_postgresql._tcp', 'URI', function(err, records) {
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
       if (isdef) { process.env['DATABASE_URL'] = value; }
       else { delete process.env['DATABASE_URL'] }
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp');
+      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp.localhost');
       expect(err.code).to.equal('ENOTFOUND');
+      expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
   }); // should error when generic environment variable has scheme that does not match service name
