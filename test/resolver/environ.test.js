@@ -21,7 +21,7 @@ describe('resolver/environ', function() {
       
       expect(err).to.be.null;
       expect(records).to.deep.equal([ {
-        uri: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
+        url: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
       } ]);
       done();
     });
@@ -40,7 +40,7 @@ describe('resolver/environ', function() {
       
       expect(err).to.be.null;
       expect(records).to.deep.equal([ {
-        uri: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
+        url: 'postgresql://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
       } ]);
       done();
     });
