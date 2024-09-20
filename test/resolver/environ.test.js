@@ -112,6 +112,32 @@ describe('resolver/environ', function() {
     });
   }); // should resolve to value of generic environment variable where scheme matches service name
   
+  it('should resolve to value of generic environment variable where scheme matches service alias', function(done) {
+    var isdef = ('DATABASE_URL' in process.env)
+      , value = process.env['DATABASE_URL'];
+    
+    process.env['DATABASE_URL'] = 'postgres://other@localhost/otherdb?connect_timeout=10&application_name=myapp';
+    
+    var registry = new Object();
+    registry.get = sinon.stub().returns({ aliases: [ 'postgres', 'pg' ]});
+    
+    var resolver = factory(registry);
+    resolver.resolve('_postgresql._tcp.localhost', 'URI', function(err, records) {
+      if (isdef) { process.env['DATABASE_URL'] = value; }
+      else { delete process.env['DATABASE_URL'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
+      
+      expect(err).to.be.null;
+      expect(records).to.deep.equal([ {
+        url: 'postgres://other@localhost/otherdb?connect_timeout=10&application_name=myapp'
+      } ]);
+      done();
+    });
+  }); // should resolve to value of generic environment variable where scheme matches service alias
+  
   it('should error when environment variable is not defined', function(done) {
     var isdef = ('POSTGRESQL_URL' in process.env)
       , value = process.env['POSTGRESQL_URL'];
