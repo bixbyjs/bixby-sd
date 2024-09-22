@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `module:bixby-sd` implementation which provides `lookup()` function matching
 functionality from Node's `dns.loopup()` function.  Used to resolve host names
 via non-DNS service discovery services.
+- `EnvironResolver` supports resolving `SRV` records.
 - `EnvironResolver` supports service name aliases when checking the environment
 for configuration.
 - `local/resolver` component implementing `http://i.bixbyjs.org/ns/LocalResolver`
