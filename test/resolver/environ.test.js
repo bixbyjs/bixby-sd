@@ -38,9 +38,9 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should resolve to value of environment variable matching service name
+  }); // should resolve SRV to value of environment variable matching service name
   
-  it('should resolve to value of environment variable matching service name', function(done) {
+  it('should resolve URI to value of environment variable matching service name', function(done) {
     var isdef = ('POSTGRESQL_URL' in process.env)
       , value = process.env['POSTGRESQL_URL'];
     
@@ -64,9 +64,9 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should resolve to value of environment variable matching service name
+  }); // should resolve URI to value of environment variable matching service name
   
-  it('should resolve to value of environment variable matching service alias', function(done) {
+  it('should resolve URI to value of environment variable matching service alias', function(done) {
     var isdef = ('POSTGRES_URL' in process.env)
       , value = process.env['POSTGRES_URL'];
     
@@ -90,9 +90,9 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should resolve to value of environment variable matching service alias
+  }); // should resolve URI to value of environment variable matching service alias
   
-  it('should resolve to value of environment variable matching second service alias', function(done) {
+  it('should resolve URI to value of environment variable matching second service alias', function(done) {
     var isdef = ('PG_URL' in process.env)
       , value = process.env['PG_URL'];
     
@@ -116,9 +116,9 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should resolve to value of environment variable matching second service alias
+  }); // should resolve URI to value of environment variable matching second service alias
   
-  it('should resolve to value of generic environment variable where scheme matches service name', function(done) {
+  it('should resolve URI to value of generic environment variable where scheme matches service name', function(done) {
     var isdef = ('DATABASE_URL' in process.env)
       , value = process.env['DATABASE_URL'];
     
@@ -142,9 +142,9 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should resolve to value of generic environment variable where scheme matches service name
+  }); // should resolve URI to value of generic environment variable where scheme matches service name
   
-  it('should resolve to value of generic environment variable where scheme matches service alias', function(done) {
+  it('should resolve URI to value of generic environment variable where scheme matches service alias', function(done) {
     var isdef = ('DATABASE_URL' in process.env)
       , value = process.env['DATABASE_URL'];
     
@@ -168,9 +168,9 @@ describe('resolver/environ', function() {
       } ]);
       done();
     });
-  }); // should resolve to value of generic environment variable where scheme matches service alias
+  }); // should resolve URI to value of generic environment variable where scheme matches service alias
   
-  it('should error when environment variable is not defined', function(done) {
+  it('should error resolving URI when environment variable is not defined', function(done) {
     var isdef = ('POSTGRESQL_URL' in process.env)
       , value = process.env['POSTGRESQL_URL'];
     
@@ -193,9 +193,9 @@ describe('resolver/environ', function() {
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
-  }); // should error when environment variable is not defined
+  }); // should error resolving URI when environment variable is not defined
   
-  it('should error when generic environment variable has scheme that does not match service name', function(done) {
+  it('should error resolving URI when generic environment variable has scheme that does not match service name', function(done) {
     var isdef = ('DATABASE_URL' in process.env)
       , value = process.env['DATABASE_URL'];
     
@@ -219,6 +219,6 @@ describe('resolver/environ', function() {
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
-  }); // should error when generic environment variable has scheme that does not match service name
+  }); // should errorresolving URI  when generic environment variable has scheme that does not match service name
   
 });
