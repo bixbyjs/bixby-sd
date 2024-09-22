@@ -8,6 +8,38 @@ var factory = require('../../app/resolver/environ');
 
 describe('resolver/environ', function() {
   
+  it('should resolve SRV to value of environment variable matching service name', function(done) {
+    var ishdef = ('POSTGRESQL_HOST' in process.env)
+      , hvalue = process.env['POSTGRESQL_HOST']
+      , ispdef = ('POSTGRESQL_PORT' in process.env)
+      , pvalue = process.env['POSTGRESQL_PORT'];
+    
+    process.env['POSTGRESQL_HOST'] = 'bf1036d9-c2ba-4ae3-ad58-8d14a50117b3.pg.example.com';
+    process.env['POSTGRESQL_PORT'] = 45432;
+    
+    var registry = new Object();
+    registry.get = sinon.stub().returns(undefined);
+    
+    var resolver = factory(registry);
+    resolver.resolve('_postgresql._tcp.localhost', 'SRV', function(err, records) {
+      if (ishdef) { process.env['POSTGRESQL_HOST'] = hvalue; }
+      else { delete process.env['POSTGRESQL_HOST'] }
+      if (ispdef) { process.env['POSTGRESQL_PORT'] = pvalue; }
+      else { delete process.env['POSTGRESQL_PORT'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
+      
+      expect(err).to.be.null;
+      expect(records).to.deep.equal([ {
+        name: 'bf1036d9-c2ba-4ae3-ad58-8d14a50117b3.pg.example.com',
+        port: 45432
+      } ]);
+      done();
+    });
+  }); // should resolve to value of environment variable matching service name
+  
   it('should resolve to value of environment variable matching service name', function(done) {
     var isdef = ('POSTGRESQL_URL' in process.env)
       , value = process.env['POSTGRESQL_URL'];
