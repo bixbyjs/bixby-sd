@@ -41,10 +41,10 @@ describe('resolver/environ', function() {
   }); // should resolve SRV to value of environment variable matching service name
   
   it('should resolve SRV to value of environment variable matching service alias', function(done) {
-    var ishdef = ('POSTGRESQL_HOST' in process.env)
-      , hvalue = process.env['POSTGRESQL_HOST']
-      , ispdef = ('POSTGRESQL_PORT' in process.env)
-      , pvalue = process.env['POSTGRESQL_PORT'];
+    var ishdef = ('POSTGRES_HOST' in process.env)
+      , hvalue = process.env['POSTGRES_HOST']
+      , ispdef = ('POSTGRES_PORT' in process.env)
+      , pvalue = process.env['POSTGRES_PORT'];
     
     process.env['POSTGRES_HOST'] = 'bf1036d9-c2ba-4ae3-ad58-8d14a50117b3.pg.example.com';
     process.env['POSTGRES_PORT'] = 45432;
@@ -54,10 +54,10 @@ describe('resolver/environ', function() {
     
     var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp.localhost', 'SRV', function(err, records) {
-      if (ishdef) { process.env['POSTGRESQL_HOST'] = hvalue; }
-      else { delete process.env['POSTGRESQL_HOST'] }
-      if (ispdef) { process.env['POSTGRESQL_PORT'] = pvalue; }
-      else { delete process.env['POSTGRESQL_PORT'] }
+      if (ishdef) { process.env['POSTGRES_HOST'] = hvalue; }
+      else { delete process.env['POSTGRES_HOST'] }
+      if (ispdef) { process.env['POSTGRES_PORT'] = pvalue; }
+      else { delete process.env['POSTGRES_PORT'] }
       
       expect(registry.get.callCount).to.equal(1);
       expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
