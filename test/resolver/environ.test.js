@@ -470,6 +470,6 @@ describe('resolver/environ', function() {
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
-  }); // should errorresolving URI  when generic environment variable has scheme that does not match service name
+  }); // should error resolving URI  when generic environment variable has scheme that does not match service name
   
 });
