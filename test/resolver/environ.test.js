@@ -229,6 +229,37 @@ describe('resolver/environ', function() {
     });
   }); // should error resolving SRV when port environment variable is not a number
   
+  it('should error resolving SRV when port environment variable is not a number and default port is known', function(done) {
+    var ishdef = ('POSTGRESQL_HOST' in process.env)
+      , hvalue = process.env['POSTGRESQL_HOST']
+      , ispdef = ('POSTGRESQL_PORT' in process.env)
+      , pvalue = process.env['POSTGRESQL_PORT'];
+    
+    process.env['POSTGRESQL_HOST'] = 'bf1036d9-c2ba-4ae3-ad58-8d14a50117b3.pg.example.com';
+    process.env['POSTGRESQL_PORT'] = 'fivefourthreetwo';
+    
+    var registry = new Object();
+    registry.get = sinon.stub().returns({ port: 5432 });
+    
+    var resolver = factory(registry);
+    resolver.resolve('_postgresql._tcp.localhost', 'SRV', function(err, records) {
+      if (ishdef) { process.env['POSTGRESQL_HOST'] = hvalue; }
+      else { delete process.env['POSTGRESQL_HOST'] }
+      if (ispdef) { process.env['POSTGRESQL_PORT'] = pvalue; }
+      else { delete process.env['POSTGRESQL_PORT'] }
+      
+      expect(registry.get.callCount).to.equal(1);
+      expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
+      expect(registry.get.getCall(0).args[1]).to.equal('tcp');
+      
+      expect(err).to.be.an.instanceOf(Error);
+      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.hostname).to.equal('_postgresql._tcp.localhost');
+      done();
+    });
+  }); // should error resolving SRV when port environment variable is not a number and default port is known
+  
   it('should error resolving SRV when host and port environment variables are not like-named', function(done) {
     var ishdef = ('POSTGRESQL_HOST' in process.env)
       , hvalue = process.env['POSTGRESQL_HOST']
