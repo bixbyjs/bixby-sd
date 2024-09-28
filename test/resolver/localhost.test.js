@@ -9,7 +9,7 @@ var events = require('events');
 
 describe('resolver/localhost', function() {
   
-  it('should resolve when connection to port is established', function(done) {
+  it('should resolve SRV when connection to port is established', function(done) {
     var net = {
       createConnection: sinon.spy(function(port) {
         var socket = new events.EventEmitter();
@@ -49,9 +49,9 @@ describe('resolver/localhost', function() {
       } ]);
       done();
     });
-  }); // should resolve when connection to port is established
+  }); // should resolve SRV when connection to port is established
   
-  it('should error when connection to port cannot be established', function(done) {
+  it('should error resolving SRV when connection to port cannot be established', function(done) {
     var net = {
       createConnection: sinon.spy(function(port) {
         var socket = new events.EventEmitter();
@@ -87,9 +87,9 @@ describe('resolver/localhost', function() {
       expect(records).to.be.undefined;
       done();
     });
-  }); // should error when connection to port cannot be established
+  }); // should error resolving SRV when connection to port cannot be established
   
-  it('should error when service is not found in registry', function(done) {
+  it('should error resolving SRV when service is not found in registry', function(done) {
     var net = {
       createConnection: sinon.spy(function(port) {
         var socket = new events.EventEmitter();
@@ -125,6 +125,6 @@ describe('resolver/localhost', function() {
       expect(records).to.be.undefined;
       done();
     });
-  }); // should error when connection to port cannot be established
+  }); // should error resolving SRV when service is not found in registry
   
 });
