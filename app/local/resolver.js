@@ -12,6 +12,6 @@ exports = module.exports = function(localhost, environ) {
 exports['@implements'] = 'http://i.bixbyjs.org/ns/LocalResolver';
 exports['@singleton'] = true;
 exports['@require'] = [
-  '../resolver/localhost',
+  '../resolver/port',
   '../resolver/environ'
 ];
