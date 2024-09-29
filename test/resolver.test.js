@@ -78,15 +78,13 @@ describe('resolver', function() {
         
         factory(container, environResolver, portResolver, _logger)
           .then(function(resolver) {
-            console.log('created resolver!');
-            console.log(resolver)
-            
             resolver.resolve('_postgresql._tcp', 'SRV', function(err, addresses) {
-              console.log('RESOLVED!');
-              console.log(err);
-              console.log(addresses);
-              
               if (err) { return done(err); }
+              
+              expect(environResolver.resolve.callCount).to.equal(1);
+              expect(environResolver.resolve.getCall(0).args[0]).to.equal('_postgresql._tcp.localhost');
+              expect(environResolver.resolve.getCall(0).args[1]).to.equal('SRV');
+              //expect(portResolver.resolve.callCount).to.equal(0);
               
               expect(addresses).to.deep.equal([ {
                 name: 'postgres.test',
@@ -94,8 +92,6 @@ describe('resolver', function() {
               } ]);
               done();
             });
-            
-            //done();
           })
           .catch(done);
       }); // should search localhost domain and yield records from first successful service
