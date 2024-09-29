@@ -56,4 +56,52 @@ describe('resolver', function() {
       .catch(done);
   }); // should create resolver with support for localhost domain
   
-}); // switch
+  describe('Resolver', function() {
+    
+    describe('#resolve', function() {
+      
+      it('should search localhost domain and yield records from first successful service', function(done) {
+        var container = new Object();
+        container.components = sinon.stub().returns([]);
+        var environResolver = new Object();
+        environResolver.resolve = sinon.stub().yieldsAsync(null, [ {
+          name: 'postgres.test',
+          port: 45432
+        } ])
+        var portResolver = new Object();
+        /*
+        portResolver.resolve = sinon.stub().yieldsAsync(null, [ {
+          name: 'localhost',
+          port: 5432
+        } ]);
+        */
+        
+        factory(container, environResolver, portResolver, _logger)
+          .then(function(resolver) {
+            console.log('created resolver!');
+            console.log(resolver)
+            
+            resolver.resolve('_postgresql._tcp', 'SRV', function(err, addresses) {
+              console.log('RESOLVED!');
+              console.log(err);
+              console.log(addresses);
+              
+              if (err) { return done(err); }
+              
+              expect(addresses).to.deep.equal([ {
+                name: 'postgres.test',
+                port: 45432
+              } ]);
+              done();
+            });
+            
+            //done();
+          })
+          .catch(done);
+      }); // should search localhost domain and yield records from first successful service
+      
+    }); // #resolve
+    
+  }); // Resolver
+  
+}); // resolver
