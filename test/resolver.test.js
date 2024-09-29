@@ -7,7 +7,7 @@ var factory = require('../app/resolver');
 var Switch = require('../lib/switch');
 
 
-describe('switch', function() {
+describe('resolver', function() {
   var _container = {
     components: function(){},
     create: function(){}
@@ -28,23 +28,31 @@ describe('switch', function() {
   
   
   it('should be annotated', function() {
-    expect(factory['@implements']).to.equal('http://i.bixbyjs.org/ns/Resolver');
+    expect(factory['@implements']).to.equal('module:bixby-sd.Resolver');
     expect(factory['@singleton']).to.equal(true);
   });
   
-  it('should resolve with switch', function(done) {
-    sinon.stub(_container, 'components').returns([]);
+  it('should create resolver with support for localhost domain', function(done) {
+    var container = new Object();
+    container.components = sinon.stub().returns([]);
+    var portResolver = new Object();
+    var environResolver = new Object();
     
-    var SwitchStub = sinon.stub().returns(sinon.createStubInstance(Switch));
-    var promise = $require('../app/resolver',
-      { '../lib/switch': SwitchStub }
-    )(_container, _services, _logger);
+    var ResolverStub = sinon.stub().returns(sinon.createStubInstance(Switch));
+    var factory = $require('../app/resolver',
+      { '../lib/switch': ResolverStub }
+    );
+    var promise = factory(container, portResolver, environResolver, _logger);
     
-    promise.then(function(s) {
-      expect(s).to.be.an.instanceof(Switch);
-      //expect(s.use).to.have.been.calledTwice;
-      done();
-    }).catch(done);
-  }); // should resolve with session store found via service discovery
+    factory(container, _services, _logger)
+      .then(function(resolver) {
+        expect(resolver).to.be.an.instanceof(Switch);
+        expect(resolver.use.callCount).to.equal(2);
+        expect(resolver.use.getCall(0).args[0]).to.equal('localhost.');
+        expect(resolver.use.getCall(0).args[1]).to.equal(environResolver);
+        done();
+      })
+      .catch(done);
+  }); // should create resolver with support for localhost domain
   
 }); // switch
