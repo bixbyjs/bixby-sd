@@ -3,11 +3,11 @@
 var $require = require('proxyquire');
 var expect = require('chai').expect;
 var sinon = require('sinon');
-var factory = require('../../app/resolver/localhost');
+var factory = require('../../app/resolver/port');
 var events = require('events');
 
 
-describe('resolver/localhost', function() {
+describe('resolver/port', function() {
   
   it('should resolve SRV when connection to port is established', function(done) {
     var net = {
@@ -20,11 +20,11 @@ describe('resolver/localhost', function() {
         return socket;
       })
     }
-    var LocalhostResolver = $require('../../lib/localhostresolver', {
+    var PortResolver = $require('../../lib/portresolver', {
       'net': net
     });
-    var factory = $require('../../app/resolver/localhost', {
-      '../../lib/localhostresolver': LocalhostResolver
+    var factory = $require('../../app/resolver/port', {
+      '../../lib/portresolver': PortResolver
     });
     
     
@@ -61,11 +61,11 @@ describe('resolver/localhost', function() {
         return socket;
       })
     }
-    var LocalhostResolver = $require('../../lib/localhostresolver', {
+    var PortResolver = $require('../../lib/portresolver', {
       'net': net
     });
-    var factory = $require('../../app/resolver/localhost', {
-      '../../lib/localhostresolver': LocalhostResolver
+    var factory = $require('../../app/resolver/port', {
+      '../../lib/portresolver': PortResolver
     });
     
     
@@ -100,11 +100,11 @@ describe('resolver/localhost', function() {
         return socket;
       })
     }
-    var LocalhostResolver = $require('../../lib/localhostresolver', {
+    var PortResolver = $require('../../lib/portresolver', {
       'net': net
     });
-    var factory = $require('../../app/resolver/localhost', {
-      '../../lib/localhostresolver': LocalhostResolver
+    var factory = $require('../../app/resolver/port', {
+      '../../lib/portresolver': PortResolver
     });
     
     

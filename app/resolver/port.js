@@ -1,4 +1,4 @@
-var LocalhostResolver = require('../../lib/localhostresolver');
+var LocalhostResolver = require('../../lib/portresolver');
 
 exports = module.exports = function(registry) {
   return new LocalhostResolver(registry);
