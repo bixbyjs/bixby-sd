@@ -1,7 +1,7 @@
-var LocalhostResolver = require('../../lib/portresolver');
+var PortResolver = require('../../lib/portresolver');
 
 exports = module.exports = function(registry) {
-  return new LocalhostResolver(registry);
+  return new PortResolver(registry);
 };
 
 exports['@require'] = [
