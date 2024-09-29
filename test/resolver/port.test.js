@@ -75,8 +75,8 @@ describe('resolver/port', function() {
     var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp', 'SRV', function(err, records) {
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp');
+      expect(err.code).to.equal('ENODATA');
       
       expect(registry.get.callCount).to.equal(1);
       expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
@@ -114,8 +114,8 @@ describe('resolver/port', function() {
     var resolver = factory(registry);
     resolver.resolve('_postgresql._tcp', 'SRV', function(err, records) {
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp');
+      expect(err.code).to.equal('ENODATA');
       
       expect(registry.get.callCount).to.equal(1);
       expect(registry.get.getCall(0).args[0]).to.equal('postgresql');
