@@ -160,8 +160,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
@@ -191,8 +191,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
@@ -222,8 +222,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
@@ -253,8 +253,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
@@ -284,8 +284,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('querySrv ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('querySrv ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
@@ -439,8 +439,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('queryUri ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
@@ -465,8 +465,8 @@ describe('resolver/environ', function() {
       expect(registry.get.getCall(0).args[1]).to.equal('tcp');
       
       expect(err).to.be.an.instanceOf(Error);
-      expect(err.message).to.equal('queryUri ENOTFOUND _postgresql._tcp.localhost');
-      expect(err.code).to.equal('ENOTFOUND');
+      expect(err.message).to.equal('queryUri ENODATA _postgresql._tcp.localhost');
+      expect(err.code).to.equal('ENODATA');
       expect(err.hostname).to.equal('_postgresql._tcp.localhost');
       done();
     });
