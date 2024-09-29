@@ -17,6 +17,12 @@ interface, intended for bootstrapping network-based service discovery services.
 
 ### Changed
 - `resolveUri()` yields an object with a `url` property, rather than `uri`.
+- `EnvironResolver` yields an error with code `ENODATA`, rather than `ENOTFOUND`
+when no environment-based configuration if found.
+- `EnvironResolver` throws an error when `#resolve()` is called with an
+unsupported `rrtype`, consistent with behavior of Node's `dns` module.
+- `LocalhostResolver` throws an error when `#resolve()` is called with an
+unsupported `rrtype`, consistent with behavior of Node's `dns` module.
 - Network-based resolvers are expected to implement `module:bixby-sd.ResolverService`
 interface, rather than `module:bixby-ns.Resolver`.  They should `@require` a `$srv`
 record using the `domain=localhost` structured parameter to avoid a recursive
