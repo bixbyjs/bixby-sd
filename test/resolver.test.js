@@ -8,13 +8,6 @@ var Switch = require('../lib/switch');
 
 
 describe('resolver', function() {
-  var _container = {
-    components: function(){},
-    create: function(){}
-  };
-  var _services = {
-    createConnection: function(){}
-  };
   var _logger = {
     emergency: function(){},
     alert: function(){},
