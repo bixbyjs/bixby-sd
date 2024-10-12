@@ -18,6 +18,8 @@ interface, intended for bootstrapping network-based service discovery services.
 ### Changed
 - Renamed `http://i.bixbyjs.org/ns/Resolver` interface to
 `module:bixby-sd.Resolver`.
+- `Resolver` resolves host names using the most specific subzone, rather than
+any zone the name is within, allowing for authoritative delegation.
 - Renamed `LocalhostResolver` to `PortResolver`.
 - `resolveUri()` yields an object with a `url` property, rather than `uri`.
 - `EnvironResolver` yields an error with code `ENODATA`, rather than `ENOTFOUND`
