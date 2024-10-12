@@ -69,12 +69,7 @@ describe('resolver', function() {
           port: 45432
         } ])
         var portResolver = new Object();
-        /*
-        portResolver.resolve = sinon.stub().yieldsAsync(null, [ {
-          name: 'localhost',
-          port: 5432
-        } ]);
-        */
+        portResolver.resolve = sinon.stub().yieldsAsync();
         
         factory(container, environResolver, portResolver, _logger)
           .then(function(resolver) {
@@ -84,11 +79,44 @@ describe('resolver', function() {
               expect(environResolver.resolve.callCount).to.equal(1);
               expect(environResolver.resolve.getCall(0).args[0]).to.equal('_postgresql._tcp.localhost');
               expect(environResolver.resolve.getCall(0).args[1]).to.equal('SRV');
-              //expect(portResolver.resolve.callCount).to.equal(0);
+              expect(portResolver.resolve.callCount).to.equal(0);
               
               expect(addresses).to.deep.equal([ {
                 name: 'postgres.test',
                 port: 45432
+              } ]);
+              done();
+            });
+          })
+          .catch(done);
+      }); // should search localhost domain and yield records from first successful service
+      
+      it('should search localhost domain and yield records from second successful service', function(done) {
+        var container = new Object();
+        container.components = sinon.stub().returns([]);
+        var environResolver = new Object();
+        environResolver.resolve = sinon.stub().yieldsAsync(new Error('something went wrong'));
+        var portResolver = new Object();
+        portResolver.resolve = sinon.stub().yieldsAsync(null, [ {
+          name: 'localhost',
+          port: 5432
+        } ]);
+        
+        factory(container, environResolver, portResolver, _logger)
+          .then(function(resolver) {
+            resolver.resolve('_postgresql._tcp', 'SRV', function(err, addresses) {
+              if (err) { return done(err); }
+              
+              expect(environResolver.resolve.callCount).to.equal(1);
+              expect(environResolver.resolve.getCall(0).args[0]).to.equal('_postgresql._tcp.localhost');
+              expect(environResolver.resolve.getCall(0).args[1]).to.equal('SRV');
+              expect(portResolver.resolve.callCount).to.equal(1);
+              expect(portResolver.resolve.getCall(0).args[0]).to.equal('_postgresql._tcp.localhost');
+              expect(portResolver.resolve.getCall(0).args[1]).to.equal('SRV');
+              
+              expect(addresses).to.deep.equal([ {
+                name: 'localhost',
+                port: 5432
               } ]);
               done();
             });
