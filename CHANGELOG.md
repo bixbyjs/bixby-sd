@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `module:bixby-sd` implementation which provides `lookup()` function matching
 functionality from Node's `dns.loopup()` function.  Used to resolve host names
 via non-DNS service discovery services.
+- `Resolver#domain()` function.
 - `EnvironResolver` supports resolving `SRV` records.
 - `EnvironResolver` supports service name aliases when checking the environment
 for configuration.
@@ -20,6 +21,9 @@ interface, intended for bootstrapping network-based service discovery services.
 `module:bixby-sd.Resolver`.
 - `Resolver` resolves host names using the most specific subzone, rather than
 any zone the name is within, allowing for authoritative delegation.
+- Renamed `Resolver#join()` to `Resolver#search()`.
+- Removed `join` argument to `Resolver#use().`.  Search domain should be set by
+calling `Resolver#search()` instead.
 - Renamed `LocalhostResolver` to `PortResolver`.
 - `resolveUri()` yields an object with a `url` property, rather than `uri`.
 - `EnvironResolver` yields an error with code `ENODATA`, rather than `ENOTFOUND`
